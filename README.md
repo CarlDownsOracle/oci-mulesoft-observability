@@ -23,9 +23,8 @@ Please see these references for more details.
 - [OCI Service Connector Hub](https://docs.oracle.com/en-us/iaas/Content/service-connector-hub/overview.htm)
 - [OCI Functions Overview](https://docs.oracle.com/en-us/iaas/Content/Functions/Concepts/functionsoverview.htm)
 
-### Use Case
 
-### Environment
+### Function Environment
 
 The Function requires a small amount of configuration.  Here are the supported variables:
 
