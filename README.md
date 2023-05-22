@@ -48,5 +48,5 @@ Visit [LiveLabs](http://bit.ly/golivelabs) now to get started.  Workshops are ad
 - [The Essentials of Cloud Observability Workshop](https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/view-workshop?wid=708)
 
 ## License
-Copyright (c) 2014, 2022 Oracle and/or its affiliates
+Copyright (c) 2014, 2023 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
