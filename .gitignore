@@ -4,7 +4,5 @@ _site
 .sw[a-z]
 .idea/ 
 *.iml
-*.json
 venv/
 archive/
-test_data/
