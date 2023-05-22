@@ -39,18 +39,16 @@ def handler(ctx, data: io.BytesIO = None):
     try:
         event_list = json.loads(data.getvalue())
         logging.getLogger().info(preamble.format(ctx.FnName(), len(event_list), logging_level, is_forwarding))
-        send_to_datadog(event_list=event_list)
+        send_to_mulesoft(event_list=event_list)
 
     except (Exception, ValueError) as ex:
         logging.getLogger().error('error handling logging payload: {}'.format(str(ex)))
         logging.getLogger().error(ex)
 
 
-def send_to_datadog (event_list):
+def send_to_mulesoft(event_list):
     """
-    Sends each transformed event to DataDog Endpoint.
-    :param event_list: list of events in DataDog format
-    :return: None
+    Sends each transformed event to MuleSoft Endpoint.
     """
 
     if is_forwarding is False:
@@ -66,14 +64,13 @@ def send_to_datadog (event_list):
         session.mount('https://', adapter)
 
         for event in event_list:
-            dd_headers = {'Content-type': 'application/json',
-                          api_token_header: api_token,
-                          api_account_id_header:
-                              api_account_id}
+            http_headers = {'Content-type': 'application/json',
+                            api_token_header: api_token,
+                            api_account_id_header: api_account_id}
 
-            post_response = session.post(api_endpoint, data=json.dumps(event), headers=dd_headers)
+            post_response = session.post(api_endpoint, data=json.dumps(event), headers=http_headers)
             if post_response.status_code != 200:
-                raise Exception('error POSTing API endpoint', post_response.text)
+                raise Exception('error posting to API endpoint', post_response.text)
 
     finally:
         session.close()
@@ -107,9 +104,8 @@ def get_dictionary_value(dictionary: dict, target_key: str):
 
 def local_test_mode(filename):
     """
-    This routine reads a local json CloudEvents file, converting the contents to DataDog format.
-    :param filename: cloud events json file exported from OCI Logging UI or CLI.
-    :return: None
+    Test routine
+    Test routine
     """
 
     logging.getLogger().info("testing {}".format(filename))
@@ -121,7 +117,7 @@ def local_test_mode(filename):
             data = [data]
 
         logging.getLogger().debug(json.dumps(data, indent=4))
-        send_to_datadog(event_list=data)
+        send_to_mulesoft(event_list=data)
 
 
 """
