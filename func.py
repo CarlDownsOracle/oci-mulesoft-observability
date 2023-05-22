@@ -38,12 +38,12 @@ def handler(ctx, data: io.BytesIO = None):
 
     try:
         event_list = json.loads(data.getvalue())
-        logging.getLogger().info(preamble.format(ctx.FnName(), len(event_list), logging_level, is_forwarding))
+        logging.info(preamble.format(ctx.FnName(), len(event_list), logging_level, is_forwarding))
         send_to_mulesoft(event_list=event_list)
 
     except (Exception, ValueError) as ex:
-        logging.getLogger().error('error handling logging payload: {}'.format(str(ex)))
-        logging.getLogger().error(ex)
+        logging.error('error handling logging payload: {}'.format(str(ex)))
+        logging.error(ex)
 
 
 def send_to_mulesoft(event_list):
@@ -52,8 +52,11 @@ def send_to_mulesoft(event_list):
     """
 
     if is_forwarding is False:
-        logging.getLogger().debug("Forwarding is disabled - nothing sent to API endpoint")
+        logging.debug("Forwarding is disabled - nothing sent to API endpoint")
         return
+
+    if not isinstance(event_list, list):
+        event_list = [event_list]
 
     # creating a session and adapter to avoid recreating
     # a new connection pool between each POST call
@@ -62,12 +65,11 @@ def send_to_mulesoft(event_list):
     try:
         adapter = requests.adapters.HTTPAdapter(pool_connections=10, pool_maxsize=10)
         session.mount('https://', adapter)
+        http_headers = {'Content-type': 'application/json',
+                        api_token_header: api_token,
+                        api_account_id_header: api_account_id}
 
         for event in event_list:
-            http_headers = {'Content-type': 'application/json',
-                            api_token_header: api_token,
-                            api_account_id_header: api_account_id}
-
             post_response = session.post(api_endpoint, data=json.dumps(event), headers=http_headers)
             if post_response.status_code != 200:
                 raise Exception('error posting to API endpoint', post_response.text)
@@ -105,18 +107,12 @@ def get_dictionary_value(dictionary: dict, target_key: str):
 def local_test_mode(filename):
     """
     Test routine
-    Test routine
     """
 
-    logging.getLogger().info("testing {}".format(filename))
+    logging.info("testing {}".format(filename))
 
     with open(filename, 'r') as f:
         data = json.load(f)
-
-        if not isinstance(data, list):
-            data = [data]
-
-        logging.getLogger().debug(json.dumps(data, indent=4))
         send_to_mulesoft(event_list=data)
 
 
