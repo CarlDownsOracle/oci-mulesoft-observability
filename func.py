@@ -36,17 +36,16 @@ def handler(ctx, data: io.BytesIO = None):
     :return: plain text response indicating success or error
     """
 
-    preamble = "fn {} / events {} / logging level {} / forwarding {}"
+    preamble = "fn {} / events {} / logging level {} / batch size {} / forwarding {}"
 
     try:
         event_list = json.loads(data.getvalue())
-        logging.info(preamble.format(ctx.FnName(), len(event_list), logging_level, is_forwarding))
+        logging.info(preamble.format(ctx.FnName(), len(event_list), logging_level, batch_size, is_forwarding))
         send_to_mulesoft(event_list=event_list)
 
     except (Exception, ValueError) as ex:
         logging.error('error handling logging payload: {}'.format(str(ex)))
         logging.error(ex)
-
 
 
 def send_to_mulesoft(event_list):
