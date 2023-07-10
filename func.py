@@ -18,6 +18,8 @@ api_token_header = os.getenv('API_KEY_HEADER', 'not-configured')
 api_account_id = os.getenv('ACCOUNT_ID', 'not-configured')
 api_account_id_header = os.getenv('ACCOUNT_ID_HEADER', 'not-configured')
 is_forwarding = eval(os.getenv('FORWARD_TO_ENDPOINT', "True"))
+batch_size = os.getenv('BATCH_SIZE', 1000)
+
 
 # Set all registered loggers to the configured log_level
 
@@ -46,6 +48,7 @@ def handler(ctx, data: io.BytesIO = None):
         logging.error(ex)
 
 
+
 def send_to_mulesoft(event_list):
     """
     Sends each transformed event to MuleSoft Endpoint.
@@ -69,9 +72,24 @@ def send_to_mulesoft(event_list):
                         api_token_header: api_token,
                         api_account_id_header: api_account_id}
 
-        post_response = session.post(api_endpoint, data=json.dumps(event_list), headers=http_headers)
-        if post_response.status_code != 200:
-            raise Exception('error posting to API endpoint', post_response.text)
+        # subdivide incoming payload into separate lists that are within the configured batch size
+        # create a list of event lists
+        # add each sub list to the sub lists.
+
+        batches = []
+        sub_list = []
+        batches.append(sub_list)
+
+        for event in event_list:
+            sub_list.append(event)
+            if len(sub_list) > batch_size:
+                sub_list = []
+                batches.append(sub_list)
+
+        for batch_list in batches:
+            post_response = session.post(api_endpoint, data=json.dumps(batch_list), headers=http_headers)
+            if post_response.status_code != 200:
+                raise Exception('error posting to API endpoint', post_response.text)
 
     finally:
         session.close()
