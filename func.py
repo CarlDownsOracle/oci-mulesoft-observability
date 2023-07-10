@@ -69,10 +69,9 @@ def send_to_mulesoft(event_list):
                         api_token_header: api_token,
                         api_account_id_header: api_account_id}
 
-        for event in event_list:
-            post_response = session.post(api_endpoint, data=json.dumps(event), headers=http_headers)
-            if post_response.status_code != 200:
-                raise Exception('error posting to API endpoint', post_response.text)
+        post_response = session.post(api_endpoint, data=json.dumps(event_list), headers=http_headers)
+        if post_response.status_code != 200:
+            raise Exception('error posting to API endpoint', post_response.text)
 
     finally:
         session.close()
