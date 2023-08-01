@@ -28,15 +28,16 @@ Please see these references for more details.
 
 The Function requires a small amount of configuration.  Here are the supported variables:
 
-| Environment Variable | Default           | Purpose                                                                           |
-|---------------------|:-------------:|:----------------------------------------------------------------------------------|
-| API_ENDPOINT        | not-configured | REST API endpoint for reaching MuleSoft                                           |
-| API_KEY             | not-configured      | API license token obtained from MuleSoft                                          |
-| API_KEY_HEADER      | not-configured      | HTTP Header for passing API_KEY to MuleSoft                                       |
-| ACCOUNT_ID          | not-configured      | Account ID obtained from MuleSoft                                                 |
-| ACCOUNT_ID_HEADER   | not-configured      | HTTP Header for passing Account ID to MuleSoft                                    |
-| FORWARD_TO_ENDPOINT | True      | Determines whether messages are forwarded to the configured MuleSoft API Endpoint |
-| LOGGING_LEVEL       | INFO     | Controls function logging outputs.  Choices: INFO, WARN, CRITICAL, ERROR, DEBUG   |
+| Environment Variable |    Default     | Purpose                                                                           |
+|----------------------|:--------------:|:----------------------------------------------------------------------------------|
+| API_ENDPOINT         | not-configured | REST API endpoint for reaching MuleSoft                                           |
+| API_KEY              | not-configured | API license token obtained from MuleSoft                                          |
+| API_KEY_HEADER       | not-configured | HTTP Header for passing API_KEY to MuleSoft                                       |
+| ACCOUNT_ID           | not-configured | Account ID obtained from MuleSoft                                                 |
+| ACCOUNT_ID_HEADER    | not-configured | HTTP Header for passing Account ID to MuleSoft                                    |
+| FORWARD_TO_ENDPOINT  |      True      | Determines whether messages are forwarded to the configured MuleSoft API Endpoint |
+| LOGGING_LEVEL        |      INFO      | Controls function logging outputs.  Choices: INFO, WARN, CRITICAL, ERROR, DEBUG   |
+| BATCH_SIZE           |      1000      | Number of records per batch POST to MuleSoft.                                     |
 
 
 

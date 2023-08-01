@@ -18,8 +18,7 @@ api_token_header = os.getenv('API_KEY_HEADER', 'not-configured')
 api_account_id = os.getenv('ACCOUNT_ID', 'not-configured')
 api_account_id_header = os.getenv('ACCOUNT_ID_HEADER', 'not-configured')
 is_forwarding = eval(os.getenv('FORWARD_TO_ENDPOINT', "True"))
-batch_size = os.getenv('BATCH_SIZE', 1000)
-
+batch_size = int(os.getenv('BATCH_SIZE', '1000'))
 
 # Set all registered loggers to the configured log_level
 
